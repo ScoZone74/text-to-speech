@@ -17,7 +17,8 @@ def speech_synth(text):
                                                         OutputS3KeyPrefix="vsynth",
                                                         OutputFormat="mp3",
                                                         Text=doc,
-                                                        Engine="neural")
+                                                        Engine="neural",
+                                                        )
 
     taskId = response["SynthesisTask"]["TaskId"]
     print(f"Task ID: {taskId}")
@@ -36,6 +37,7 @@ output_path = os.path.join(r"C:\Users\scozo\OneDrive\Desktop\AudioPhile", obj_ke
 def retrieve_audiofile(key, path):
     resource = boto3.resource("s3")
     my_bucket = resource.Bucket("audio-books-bucket")
-    my_bucket.download_file(key, path)
+    # my_bucket.download_file(key, path)
+    resource.meta.client.download_file(my_bucket, key, path)
 
 retrieve_audiofile(obj_key, output_path)
